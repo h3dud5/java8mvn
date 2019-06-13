@@ -2,10 +2,11 @@ package com.standardchartered.crm.models;
 
 public class SavingsAccount extends Account {
 
+	
 	private double interestRate;
 
-	public SavingsAccount(String accountNumber, String branchName, double interestRate) {
-		super(accountNumber, branchName);
+	public SavingsAccount(int id, String accountNumber, String branchName, double interestRate) {
+		super(id, accountNumber, branchName);
 		this.setInterestRate(interestRate);
 	}
 

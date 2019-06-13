@@ -4,9 +4,9 @@ public class CurrentAccount extends Account {
 	
 	private String checkbookNumber;
 	
-	public CurrentAccount(String accountNumber, String branchName) {
-		super(accountNumber, branchName);
-		// TODO Auto-generated constructor stub
+	public CurrentAccount(int id, String accountNumber, String branchName, String checkbookNumber) {
+		super(id, accountNumber, branchName);
+		setCheckbookNumber(checkbookNumber);
 	}
 
 	public String getCheckbookNumber() {

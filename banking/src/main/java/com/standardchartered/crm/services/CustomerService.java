@@ -55,7 +55,7 @@ public class CustomerService {
 
 		return customers;
 	}
-	
+
 	public Customer getCustomerById(int id) {
 		Customer customer = null;
 		Connection connection = null;
@@ -64,7 +64,7 @@ public class CustomerService {
 			PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BYID);
 			preparedStatement.setInt(1, id);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			
+
 			if (resultSet.next()) {
 				int customerId = resultSet.getInt(1);
 				String firstName = resultSet.getString(2);
@@ -76,14 +76,14 @@ public class CustomerService {
 				customer.setIcNumber(icNumber);
 				customer.setPassportNumber(passportNumber);
 			}
-			
+
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
-		
+
 		return customer;
 	}
-	
+
 	public void saveCustomer(Customer customer) {
 		Connection connection = null;
 		try {
@@ -98,7 +98,7 @@ public class CustomerService {
 			System.out.println(ex);
 		}
 	}
-	
+
 	public void updateCustomer(Customer customer) {
 		Connection connection = null;
 		try {
@@ -115,15 +115,19 @@ public class CustomerService {
 			System.out.println(ex);
 		}
 	}
-	
+
 	public void deleteCustomerById(int id) {
 		Connection connection = null;
 		try {
-			connection = Database.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE);
-			preparedStatement.setInt(1, id);
+			if (this.getCustomerById(id) != null ) {
+				connection = Database.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE);
+				preparedStatement.setInt(1, id);
 
-			preparedStatement.executeUpdate();
+				preparedStatement.executeUpdate();
+			} else {
+				System.out.println("ID does not exist");
+			}
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
