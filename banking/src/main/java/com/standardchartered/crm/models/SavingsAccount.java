@@ -24,5 +24,11 @@ public class SavingsAccount extends Account {
 		
 		return result;
 	}
+
+	@Override
+	public void performAction() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

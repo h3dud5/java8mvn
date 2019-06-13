@@ -26,4 +26,10 @@ public class CurrentAccount extends Account {
 		
 	}
 
+	@Override
+	public void performAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

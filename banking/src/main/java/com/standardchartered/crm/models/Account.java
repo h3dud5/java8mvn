@@ -1,6 +1,6 @@
 package com.standardchartered.crm.models;
 
-public class Account {
+public abstract class Account {
 
 	private String accountNumber;
 	private String branchName;
@@ -25,6 +25,8 @@ public class Account {
 	public void setBranchName(String branchName) {
 		this.branchName = branchName;
 	}
+	
+	public abstract void performAction();
 	
 	@Override
 	public String toString() {
