@@ -5,3 +5,6 @@
 /banking/target
 /WebDemo/webdemo/target
 *.settings
+*.classpath
+*.project
+/WebDemo/webdemo/.settings
