@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.standardchartered.crm.models.Account;
 import com.standardchartered.crm.models.Customer;
 import com.standardchartered.crm.utility.Database;
 
@@ -17,6 +18,9 @@ public class CustomerService {
 	private final String SQL_UPDATE = "UPDATE customers SET firstname = ?, lastname = ?, icnumber = ?, passportnumber = ? WHERE id = ?";
 	private final String SQL_DELETE = "DELETE FROM customers WHERE id = ?";
 
+	
+//	private AccountService accountService = new AccountService();
+	
 	public ArrayList<Customer> getCustomers(){
 
 		ArrayList<Customer> customers = new ArrayList<>();
@@ -44,6 +48,9 @@ public class CustomerService {
 				Customer customer = new Customer(id, firstName, lastName);
 				customer.setIcNumber(icNumber);
 				customer.setPassportNumber(passportNumber);
+				AccountService accountService = new AccountService();
+				ArrayList<Account> accounts = accountService.getAccountsOnlyByCustomerId(id);
+				customer.setAccounts(accounts);
 				customers.add(customer);
 			}
 
@@ -75,6 +82,9 @@ public class CustomerService {
 				customer = new Customer(id, firstName, lastName);
 				customer.setIcNumber(icNumber);
 				customer.setPassportNumber(passportNumber);
+				AccountService accountService = new AccountService();
+				ArrayList<Account> accounts = accountService.getAccountsOnlyByCustomerId(id);
+				customer.setAccounts(accounts);
 			}
 
 		} catch (Exception ex) {
@@ -83,6 +93,39 @@ public class CustomerService {
 
 		return customer;
 	}
+	
+	public Customer getCustomerOnlyById(int id) {
+		Customer customer = null;
+		Connection connection = null;
+		try {
+			connection = Database.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BYID);
+			preparedStatement.setInt(1, id);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				int customerId = resultSet.getInt(1);
+				String firstName = resultSet.getString(2);
+				String lastName = resultSet.getString(3);
+				String icNumber = resultSet.getString(4);
+				String passportNumber = resultSet.getString(5);
+
+				customer = new Customer(id, firstName, lastName);
+				customer.setIcNumber(icNumber);
+				customer.setPassportNumber(passportNumber);
+//				AccountService accountService = new AccountService();
+//				ArrayList<Account> accounts = accountService.getAccountsOnlyByCustomerId(id);
+//				customer.setAccounts(accounts);
+			}
+
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+
+		return customer;
+	}
+	
+	
 
 	public void saveCustomer(Customer customer) {
 		Connection connection = null;

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.standardchartered.crm.models.Account;
 import com.standardchartered.crm.models.CurrentAccount;
@@ -20,7 +21,7 @@ public class AccountService {
 	private final String SQL_UPDATE = "UPDATE accounts SET interestrate = ?, chequebooknumber = ? WHERE id = ?";
 	private final String SQL_DELETE = "DELETE FROM accounts WHERE id = ?";
 
-	private CustomerService customerService = new CustomerService();
+//	private CustomerService customerService = new CustomerService();
 
 	public ArrayList<Account> getAccountsByCustomerId(int customerId){
 
@@ -29,8 +30,10 @@ public class AccountService {
 		try {
 			connection = Database.getConnection();
 
-			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery(SQL_SELECT_BYCUSTOMERID);
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BYCUSTOMERID);
+			preparedStatement.setInt(1, customerId);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				int id = resultSet.getInt(1);
 				int custId = resultSet.getInt(2);
@@ -42,11 +45,51 @@ public class AccountService {
 
 				if (accountType.equals("S")){
 					SavingsAccount savingsAccount = new SavingsAccount(id, accountNumber, branchName, interestRate);
-					savingsAccount.setCustomer(this.customerService.getCustomerById(custId));
+					CustomerService customerService = new CustomerService();
+					savingsAccount.setCustomer(customerService.getCustomerById(custId));
 					accounts.add(savingsAccount);
 				} else {
 					CurrentAccount currentAccount = new CurrentAccount(id, accountNumber, branchName, chequeBookNumber);
-					currentAccount.setCustomer(this.customerService.getCustomerById(custId));
+					CustomerService customerService = new CustomerService();
+					currentAccount.setCustomer(customerService.getCustomerById(custId));
+					accounts.add(currentAccount);
+				}
+			}
+
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+
+		return accounts;
+	}
+	
+	public ArrayList<Account> getAccountsOnlyByCustomerId(int customerId){
+
+		ArrayList<Account> accounts = new ArrayList<>();
+		Connection connection = null;
+		try {
+			connection = Database.getConnection();
+
+			PreparedStatement preparedStatement = connection.prepareStatement(SQL_SELECT_BYCUSTOMERID);
+			preparedStatement.setInt(1, customerId);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				int id = resultSet.getInt(1);
+				int custId = resultSet.getInt(2);
+				String accountType = resultSet.getString(3);
+				String accountNumber = resultSet.getString(4);
+				String branchName = resultSet.getString(5);
+				Double interestRate = resultSet.getDouble(6);
+				String chequeBookNumber = resultSet.getString(7);
+
+				if (accountType.equals("S")){
+					SavingsAccount savingsAccount = new SavingsAccount(id, accountNumber, branchName, interestRate);
+//					savingsAccount.setCustomer(this.customerService.getCustomerById(custId));
+					accounts.add(savingsAccount);
+				} else {
+					CurrentAccount currentAccount = new CurrentAccount(id, accountNumber, branchName, chequeBookNumber);
+//					currentAccount.setCustomer(this.customerService.getCustomerById(custId));
 					accounts.add(currentAccount);
 				}
 			}
@@ -78,10 +121,12 @@ public class AccountService {
 
 				if (accountType.equals("S")){
 					account = new SavingsAccount(id, accountNumber, branchName, interestRate);
-					account.setCustomer(this.customerService.getCustomerById(custId));
+					CustomerService customerService = new CustomerService();
+					account.setCustomer(customerService.getCustomerById(custId));
 				} else {
 					account = new CurrentAccount(id, accountNumber, branchName, chequeBookNumber);
-					account.setCustomer(this.customerService.getCustomerById(custId));
+					CustomerService customerService = new CustomerService();
+					account.setCustomer(customerService.getCustomerById(custId));
 				}
 
 			}
@@ -107,7 +152,7 @@ public class AccountService {
 				preparedStatement.setString(3, savingsAccount.getAccountNumber());
 				preparedStatement.setString(4, savingsAccount.getBranchName());
 				preparedStatement.setDouble(5, savingsAccount.getInterestRate());
-				preparedStatement.setString(6, "");
+				preparedStatement.setString(6, " ");
 
 			} else {
 				CurrentAccount currentAccount = (CurrentAccount) account;
@@ -166,4 +211,5 @@ public class AccountService {
 			System.out.println(ex);
 		}
 	}
+	
 }

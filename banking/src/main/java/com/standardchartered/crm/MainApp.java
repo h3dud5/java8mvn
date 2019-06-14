@@ -1,8 +1,64 @@
 package com.standardchartered.crm;
 
+import com.standardchartered.crm.controllers.AccountController;
 import com.standardchartered.crm.controllers.CustomerController;
 import com.standardchartered.crm.utility.Menu;
 import com.standardchartered.crm.utility.MenuOption;
+
+class SCAccountMenu {
+
+	private Menu menu;
+
+	public SCAccountMenu() {
+		this.menu = new Menu();
+	}
+
+	public Menu create() {
+		MenuOption menuOption = new MenuOption(1, "List Accounts By Customer Id") {
+			public void performAction() {
+				AccountController accountController = new AccountController();
+				accountController.doListAccounts();
+
+			}
+		};
+
+		this.menu.setMenuOption(menuOption);
+
+		menuOption = new MenuOption(2, "View Account By Id") {
+			public void performAction() {
+				AccountController accountController = new AccountController();
+				accountController.doViewAccountById();
+			}
+		};
+		this.menu.setMenuOption(menuOption);
+		
+		menuOption = new MenuOption(3, "Add a New Account") {
+			public void performAction() {
+				AccountController accountController = new AccountController();
+				accountController.doNewAccount();
+			}
+		};
+		this.menu.setMenuOption(menuOption);
+
+		menuOption = new MenuOption(4, "Edit Existing Account") {
+			public void performAction() {
+				AccountController accountController = new AccountController();
+				accountController.doEditAccount();
+			}
+		};
+		this.menu.setMenuOption(menuOption);
+		
+		menuOption = new MenuOption(5, "Delete Account") {
+			public void performAction() {
+				AccountController accountController = new AccountController();
+				accountController.doDeleteAccount();
+			}
+		};
+		this.menu.setMenuOption(menuOption);
+	
+		return this.menu;
+	}
+}
 
 class SCMenu {
 
@@ -51,6 +107,14 @@ class SCMenu {
 			public void performAction() {
 				CustomerController customerController = new CustomerController();
 				customerController.doDeleteCustomer();
+			}
+		};
+		this.menu.setMenuOption(menuOption);
+		
+		menuOption = new MenuOption(6, "Manage Accounts") {
+			public void performAction() {
+				SCAccountMenu scAccountMenu = new SCAccountMenu();
+				scAccountMenu.create().handle();
 			}
 		};
 		this.menu.setMenuOption(menuOption);

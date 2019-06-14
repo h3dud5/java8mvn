@@ -45,12 +45,12 @@ public abstract class Account {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-
-	public abstract void performAction();
 	
 	@Override
 	public String toString() {
-		String result = "Account Number: " + this.accountNumber +"\n";
+		String result = "Id: " + this.id + "\n";
+		result = "Account Number: " + this.accountNumber +"\n";
+		result += "Account Type: " + this.getClass().getSimpleName() + "\n";
 		result += "Branch Name: " + this.branchName + "\n";
 		
 		return result;

@@ -21,15 +21,10 @@ public class SavingsAccount extends Account {
 	@Override
 	public String toString() {
 		String result = super.toString();
-		result += "Interest Rate: " + this.interestRate;
+		result += "Interest Rate: " + this.interestRate + "\n";
 		
 		return result;
 	}
 
-	@Override
-	public void performAction() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

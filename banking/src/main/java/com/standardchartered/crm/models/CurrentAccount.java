@@ -20,16 +20,11 @@ public class CurrentAccount extends Account {
 	@Override
 	public String toString() {
 		String result = super.toString();
-		result += "Checkbook Number: " + this.checkbookNumber;
+		result += "Checkbook Number: " + this.checkbookNumber + "\n";
 		
 		return result;
 		
 	}
 
-	@Override
-	public void performAction() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }
