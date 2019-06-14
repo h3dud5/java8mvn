@@ -3,3 +3,5 @@
 /crm/bin
 */target
 /banking/target
+/WebDemo/webdemo/target
+*.settings
